@@ -1,4 +1,4 @@
-package com.example.flutter_gallery_app
+package ru.skillbranch.galleryapp
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
