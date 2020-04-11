@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+const APP_TITLE = 'Gallery App';
+
 class TestWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container();
@@ -10,11 +12,11 @@ class TestWidget extends StatelessWidget {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
-        title: 'Flutter Demo',
+        title: APP_TITLE,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.blueGrey,
         ),
-        home: MyHomePage(title: 'Flutter Demo Home Page'),
+        home: MyHomePage(title: APP_TITLE),
       );
 }
 
@@ -36,17 +38,31 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
+          backgroundColor: Colors.blueGrey[900],
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const Image(
-                image: AssetImage('images/schwarz.jpeg'),
+              Card(
+                semanticContainer: true,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: Image.asset(
+                  'images/schwarz.jpeg',
+                  fit: BoxFit.fill,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                elevation: 5,
+                margin: EdgeInsets.all(10),
               ),
               Column(
                 children: <Widget>[
-                  const Text('How many times I\'ve washed my hands today:'),
+                  const Text(
+                    'How many times I\'ve washed my hands today:',
+                    style: TextStyle(fontSize: 20),
+                  ),
                   Text(
                     '$_counter',
                     style: Theme.of(context).textTheme.display1,
@@ -56,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
+        backgroundColor: Colors.blueGrey[100],
         floatingActionButton: FloatingActionButton(
           onPressed: _incrementCounter,
           tooltip: 'Increment',
