@@ -3,12 +3,12 @@ import 'package:csv/csv.dart';
 import 'models/user.dart';
 import './string_util.dart';
 
-class UserHolder {
+class UserHolder with UserUtils {
   Map<String, User> _users = {};
 
   void registerUser(String username, String phone, String email) {
     User user = User(
-        name: username.capitalize(username), phone: phone, email: email);
+        name: capitalize(username), phone: phone, email: email);
     if (_users.containsKey(user.login)) {
       throw Exception("User with login ${user.login} already exists!");
     }
@@ -17,7 +17,7 @@ class UserHolder {
 
   User registerUserByEmail(String fullName, String email) {
     User user = User(
-        name: fullName.capitalize(fullName), email: email, phone: null);
+        name: capitalize(fullName), email: email, phone: null);
     if (_users.containsKey(user.login)) {
       throw Exception('A user with this email already exists');
     }
@@ -40,10 +40,10 @@ class UserHolder {
   User getUserByLogin(String login) => _users[login];
 
   User findUserInFriends(String fullName, User user) {
-    User toFindFriendOf = _users[fullName.capitalize(fullName)];
+    User toFindFriendOf = _users[capitalize(fullName)];
     if (toFindFriendOf == null) {
       throw Exception(
-          'No user with name ${fullName.capitalize(fullName)}!');
+          'No user with name ${capitalize(fullName)}!');
     }
     if (toFindFriendOf.friends.contains(user)) {
       return user;
@@ -54,14 +54,17 @@ class UserHolder {
   List<User> importUsers(List<String> users) {
     users.forEach((userData) {
       List<List<dynamic>> singleUserDate =
-          const CsvToListConverter(fieldDelimiter: ";").convert(userData);
+          const CsvToListConverter(fieldDelimiter: ';').convert(userData);
     });
+    List<List<dynamic>> test = const CsvToListConverter(fieldDelimiter: ';').convert(
+      """
+        Eric Freeman;
+        eric.freeman@gmail.com;
+        +1 (231) 076-1449;
+      """
+    );
     print("test");
-//    """
-//      Eric Freeman;
-//      eric.freeman@gmail.com;
-//      +1 (231) 076-1449;
-//    """
+    return [];
   }
 
   void setFriends(String login, List<User> friends) {
