@@ -1,3 +1,3 @@
-extension MyString on String {
-  String capitalizeName() => this[0].toUpperCase() + this.substring(1).toLowerCase();
+extension UserUtils on String {
+  String capitalizeName(String s) => s[0].toUpperCase() + s.substring(1).toLowerCase();
 }
