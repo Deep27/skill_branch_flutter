@@ -40,10 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Card(
                 semanticContainer: true,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Image.asset(
-                  'images/schwarz.jpeg',
-                  fit: BoxFit.fill,
-                ),
+                child: const Text('Enthusiasm was supposed to be here.'),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
