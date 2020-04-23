@@ -47,7 +47,7 @@ class User {
       Lastname: $_lastName
       Email: $_email
       Phone: $_phone
-      Friends: ${_friends.toList()} 
+      Friends: ${_friends.toList()}
     ''';
 
   void addFriends(Iterable<User> newFriends) => _friends.addAll(newFriends);
@@ -63,17 +63,20 @@ class User {
   static String _getLastName(String username) => username.split(" ")[1];
 
   static String _checkPhone(String phone) {
+    if (phone == null) {
+      return null;
+    }
+    phone = phone.replaceAll(RegExp("[^+\\d]"), "");
     final String pattern = r"^(?:[+0])?[0-9]{11}";
     if (!RegExp(pattern).hasMatch(phone)) {
       throw Exception(
           'Enter a valid phone number starting with a + and containing 11 digits.');
     }
-    phone = phone.replaceAll(RegExp("[^+\\d]"), "");
     return phone;
   }
 
   static String _checkEmail(String email) {
-    if (email.isEmpty) {
+    if (email != null && email.isEmpty) {
       throw Exception("Email must not be null or empty!");
     }
     return email;
@@ -83,7 +86,8 @@ class User {
 
   String get phone => _phone;
 
-  String get name => _firstName;
+  String get name => '$_firstName $_lastName';
+
   String get firstName => _firstName;
 
   String get lastName => _lastName;

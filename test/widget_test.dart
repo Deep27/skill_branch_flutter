@@ -7,13 +7,8 @@ import '../lib/user_holder.dart';
 void main() {
   UserHolder holder;
 
-  setUp(() {
-    holder = UserHolder();
-  });
-
-  tearDownAll(() {
-    holder = null;
-  });
+  setUp(() => holder = UserHolder());
+  tearDownAll(() => holder = null);
 
   test('registerUser', () {
     holder.registerUser("Skill Branch", "+79776150445", "kaparray@gmail.com");
@@ -31,7 +26,7 @@ void main() {
 
     expect(user.login, holder.getUserByLogin(user.login).login);
     expect(user.phone, holder.getUserByLogin(user.login).phone);
-    expect(user.firstName, holder.getUserByLogin(user.login).name);
+    expect(user.firstName, holder.getUserByLogin(user.login).firstName);
     expect(user.email, holder.getUserByLogin(user.login).email);
   });
 
@@ -41,7 +36,7 @@ void main() {
 
       expect(user.login, holder.getUserByLogin(user.login).login);
       expect(user.phone, holder.getUserByLogin(user.login).phone);
-      expect(user.firstName, holder.getUserByLogin(user.login).name);
+      expect(user.firstName, holder.getUserByLogin(user.login).firstName);
       expect(user.email, holder.getUserByLogin(user.login).email);
     });
 
@@ -57,7 +52,7 @@ void main() {
 
       expect(user.login, holder.getUserByLogin(user.login).login);
       expect(user.phone, holder.getUserByLogin(user.login).phone);
-      expect(user.firstName, holder.getUserByLogin(user.login).name);
+      expect(user.firstName, holder.getUserByLogin(user.login).firstName);
       expect(user.email, holder.getUserByLogin(user.login).email);
     });
 
@@ -140,9 +135,9 @@ void main() {
 
     List<User> users = holder.importUsers([
       """
-      ${user.firstName};
-      ${user.email};
-      ${user.phone};
+        ${user.firstName};
+        ${user.email};
+        ${user.phone};
       """,
     ]);
 

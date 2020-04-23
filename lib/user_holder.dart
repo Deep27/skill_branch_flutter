@@ -7,8 +7,7 @@ class UserHolder with UserUtils {
   Map<String, User> _users = {};
 
   void registerUser(String username, String phone, String email) {
-    User user = User(
-        name: capitalize(username), phone: phone, email: email);
+    User user = User(name: capitalize(username), phone: phone, email: email);
     if (_users.containsKey(user.login)) {
       throw Exception("User with login ${user.login} already exists!");
     }
@@ -16,8 +15,10 @@ class UserHolder with UserUtils {
   }
 
   User registerUserByEmail(String fullName, String email) {
-    User user = User(
-        name: capitalize(fullName), email: email, phone: null);
+    if (!email.contains('@')) {
+      throw Exception('Incorrect email!');
+    }
+    User user = User(name: capitalize(fullName), email: email, phone: null);
     if (_users.containsKey(user.login)) {
       throw Exception('A user with this email already exists');
     }
@@ -39,11 +40,15 @@ class UserHolder with UserUtils {
 
   User getUserByLogin(String login) => _users[login];
 
-  User findUserInFriends(String fullName, User user) {
-    User toFindFriendOf = _users[capitalize(fullName)];
+  User findUserInFriends(String login, User user) {
+    User toFindFriendOf;
+    if (login.contains("@")) {
+      toFindFriendOf = _users[login];
+    } else {
+      toFindFriendOf = _users[capitalize(login)];
+    }
     if (toFindFriendOf == null) {
-      throw Exception(
-          'No user with name ${capitalize(fullName)}!');
+      throw Exception('No user with login $login!');
     }
     if (toFindFriendOf.friends.contains(user)) {
       return user;
@@ -56,13 +61,12 @@ class UserHolder with UserUtils {
       List<List<dynamic>> singleUserDate =
           const CsvToListConverter(fieldDelimiter: ';').convert(userData);
     });
-    List<List<dynamic>> test = const CsvToListConverter(fieldDelimiter: ';').convert(
-      """
+    List<List<dynamic>> test =
+        const CsvToListConverter(fieldDelimiter: ';').convert("""
         Eric Freeman;
         eric.freeman@gmail.com;
         +1 (231) 076-1449;
-      """
-    );
+      """);
     print("test");
     return [];
   }
