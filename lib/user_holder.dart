@@ -49,31 +49,51 @@ class UserHolder with UserUtils {
     }
     if (toFindFriendOf == null) {
       throw Exception('No user with login $login!');
-    }
-    if (toFindFriendOf.friends.contains(user)) {
+    } else if (toFindFriendOf.friends.contains(user)) {
       return user;
     }
     throw Exception('${user.login} is not a friend of the login');
   }
 
   List<User> importUsers(List<String> users) {
-    users.forEach((userData) {
-      List<List<dynamic>> singleUserDate =
-          const CsvToListConverter(fieldDelimiter: ';').convert(userData);
-    });
-    List<List<dynamic>> test =
-        const CsvToListConverter(fieldDelimiter: ';').convert("""
-        Eric Freeman;
-        eric.freeman@gmail.com;
-        +1 (231) 076-1449;
-      """);
-    print("test");
-    return [];
+    final csvConverter = const CsvToListConverter(fieldDelimiter: ';');
+    final List<List<dynamic>> filteredCsvUsers = users
+        .map((userData) => csvConverter.convert(userData))
+        .toList()[0]
+        .map((userData) => userData.map((data) {
+              data = data.toString().trim();
+              if ((data as String).startsWith(RegExp('\\d'))) {
+                data = '+$data';
+              }
+              return data;
+            }).toList())
+        .toList();
+    filteredCsvUsers.forEach(
+        (userData) => userData.removeWhere((stringData) => stringData.isEmpty));
+
+    print('');
+    return filteredCsvUsers
+        .map((userData) =>
+            User(name: userData[0], phone: userData[2], email: userData[1]))
+        .toList();
   }
 
   void setFriends(String login, List<User> friends) {
-    _users.clear();
-    friends.forEach((user) => _users[user.login] = user);
+    _users[login].friends.clear();
+    _users[login].friends.addAll(friends);
+  }
+
+  User findUserByFullName(String fullName) {
+    fullName = capitalize(fullName);
+    final users = Map<String, User>.from(_users);
+    users.removeWhere((login, user) => user.name != fullName);
+    final filteredUsers = users.values.toList();
+    if (filteredUsers.isEmpty) {
+      return null;
+    } else if (filteredUsers.length > 1) {
+      print('Found 2 or more users with same names! Returning the first one!');
+    }
+    return filteredUsers[0];
   }
 
   get users => _users;
