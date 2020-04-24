@@ -71,7 +71,6 @@ class UserHolder with UserUtils {
     filteredCsvUsers.forEach(
         (userData) => userData.removeWhere((stringData) => stringData.isEmpty));
 
-    print('');
     return filteredCsvUsers
         .map((userData) =>
             User(name: userData[0], phone: userData[2], email: userData[1]))
