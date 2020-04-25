@@ -86,17 +86,11 @@ class UserHolder with UserUtils {
     _users[login].friends.addAll(friends);
   }
 
-  User findUserByFullName(String fullName) {
+  List<User> findUserByFullName(String fullName) {
     fullName = capitalize(fullName);
     final users = Map<String, User>.from(_users);
     users.removeWhere((login, user) => user.name != fullName);
-    final filteredUsers = users.values.toList();
-    if (filteredUsers.isEmpty) {
-      return null;
-    } else if (filteredUsers.length > 1) {
-      print('Found 2 or more users with same names! Returning the first one!');
-    }
-    return filteredUsers[0];
+    return users.values.toList();
   }
 
   get users => _users;
