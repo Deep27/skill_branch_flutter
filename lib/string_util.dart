@@ -1,6 +1,6 @@
 class UserUtils {
   String capitalize(String s) {
-    return s[0].toUpperCase() + s.substring(1);
+    return s[0].toUpperCase() + s.substring(1).toLowerCase();
 //    List<String> fullName = s.split(" ");
 //    if (fullName.length != 2) {
 //      throw Exception("Fullname shoild consist of first and lastnames!");
