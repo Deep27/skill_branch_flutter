@@ -71,10 +71,14 @@ class UserHolder with UserUtils {
     filteredCsvUsers.forEach(
         (userData) => userData.removeWhere((stringData) => stringData.isEmpty));
 
-    return filteredCsvUsers
+    List<User> newUsers = filteredCsvUsers
         .map((userData) =>
             User(name: userData[0], phone: userData[2], email: userData[1]))
         .toList();
+
+    newUsers.forEach((user) => _users.putIfAbsent(user.login, () => user));
+
+    return newUsers;
   }
 
   void setFriends(String login, List<User> friends) {
