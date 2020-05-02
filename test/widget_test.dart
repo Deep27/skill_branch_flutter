@@ -85,7 +85,7 @@ void main() {
     );
 
     final titleFinder = find.byKey(Key('FullScreenImage'));
-    final backButton = find.byIcon(CupertinoIcons.back);
+    final backButton = find.byType(IconButton);
     final photoTextAppBar = find.text('Photo');
 
     expect(titleFinder, findsOneWidget);

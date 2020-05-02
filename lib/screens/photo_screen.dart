@@ -14,8 +14,16 @@ class FullScreenImage extends StatelessWidget {
       : _name = name == null ? 'Kirill Adeshchenko' : name,
         _userName = userName == null ? 'kaparray' : userName,
         _altDescription =
-            altDescription == null ? 'No description' : altDescription,
+            altDescription == null ? _generateDescription() : altDescription,
         super(key: key);
+
+  static String _generateDescription() {
+    StringBuffer sb = StringBuffer();
+    for (var i = 0; i < 100; i++) {
+      sb.write("A very long long description. ");
+    }
+    return sb.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
