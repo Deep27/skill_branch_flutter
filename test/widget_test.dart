@@ -1,30 +1,44 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+import 'models/car.dart' hide CarExtension2;
+import 'package:flutter_test/flutter_test.dart'
+    show expect, group, isA, setUp, tearDownAll, test, throwsA;
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+extension<T extends num> on T {
+  T increase() => this + 1;
+}
 
-import 'package:flutter_gallery_app/main.dart';
+extension<T extends num> on List<T> {
+  T get sum {
+    num acc = 0;
+    return this.fold(acc, (a, b) => a + b);
+  }
+}
+
+extension<R, F, S> on R Function(F, S) {
+  R Function(S) simplify(F first) {
+    return (S second) => this(first, second);
+  }
+}
+
+bool login(String email, String password) {
+  // ...
+  return true;
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  test('testExtensions', () {
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    var passwords = ['aaa', 'bbb', 'ccc'];
+    var email = 'email@email.com';
+    
+    passwords.forEach((pwd) => login(email, pwd));
+    passwords.forEach(login.simplify(email));
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    print(10.increase());
+    print(10.0.increase());
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    print([1, 2, 3, 4, 5].sum);
+
+    CarService carService = CarService();
+    carService.getCars().forEach((car) => print(car.mileageInKm));
   });
 }
