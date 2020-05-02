@@ -2,6 +2,7 @@ import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/feed_screen.dart';
 import 'package:FlutterGalleryApp/widgets/photo.dart';
 import 'package:FlutterGalleryApp/widgets/user_avatar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenImage extends StatelessWidget {
@@ -31,7 +32,7 @@ class FullScreenImage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Photo'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(CupertinoIcons.back),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
