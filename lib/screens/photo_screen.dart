@@ -11,8 +11,8 @@ class FullScreenImage extends StatelessWidget {
 
   FullScreenImage(
       {String name, String userName, String altDescription, Key key})
-      : _name = name,
-        _userName = userName == null ? 'Unknown' : userName,
+      : _name = name == null ? 'Kirill Adeshchenko' : name,
+        _userName = userName == null ? 'kaparray' : userName,
         _altDescription =
             altDescription == null ? 'No description' : altDescription,
         super(key: key);
@@ -32,7 +32,7 @@ class FullScreenImage extends StatelessWidget {
         children: <Widget>[
           Photo(photoLink: kFlutterDash),
           _PhotoDescription(_altDescription),
-          _Author(),
+          _Author(_name, _userName),
           _Actions(),
         ],
       ),
@@ -49,12 +49,24 @@ class _PhotoDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Text(_description),
+      child: Text(
+        _description,
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+        style: AppStyles.h3,
+      ),
     );
   }
 }
 
 class _Author extends StatelessWidget {
+  final String _name;
+  final String _userName;
+
+  _Author(String name, String userName)
+      : _name = name,
+        _userName = '@$userName';
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -67,9 +79,11 @@ class _Author extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Text('Kirill Adeshchenko', style: AppStyles.h2Black),
-              Text('@kaparray',
-                  style: AppStyles.h5Black.copyWith(color: AppColors.manatee)),
+              Text(_name, style: AppStyles.h2Black),
+              Text(
+                _userName,
+                style: AppStyles.h5Black.copyWith(color: AppColors.manatee),
+              ),
             ],
           ),
         ],
