@@ -1,3 +1,4 @@
+import 'package:FlutterGalleryApp/painter/smile_painter.dart';
 import 'package:FlutterGalleryApp/res/mentor_repo.dart';
 import 'package:FlutterGalleryApp/widgets/mentor_list_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,14 +15,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
       appBar: AppBar(
         title: const Text('Custom widgets'),
       ),
-      body: ListView(
-        children: <Widget>[
-          ...mentorRepo.map((m) => MentorListItem(m)).toList()
-        ],
+      body: Center(
+        child: CustomPaint(
+          painter: SmilePainter(),
+          size: Size(300, 300),
+        ),
       ),
     );
   }
