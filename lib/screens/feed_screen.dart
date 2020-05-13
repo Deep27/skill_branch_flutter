@@ -1,5 +1,6 @@
 import 'package:FlutterGalleryApp/res/colors.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
+import 'package:FlutterGalleryApp/screens/photo_screen.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class _FeedState extends State<Feed> {
           itemBuilder: (BuildContext context, int index) {
             return Column(
               children: <Widget>[
-                _buildItem(),
+                _buildItem(index),
                 Divider(thickness: 2, color: AppColors.mercury),
               ],
             );
@@ -30,11 +31,27 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _buildItem() {
+  Widget _buildItem(int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Photo(photoLink: kFlutterDash),
+        GestureDetector(
+          child: Hero(
+            tag: 'feedPhoto$index',
+            child: Photo(photoLink: kFlutterDash),
+          ),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => FullScreenImage(
+                name: 'test',
+                userName: 'test',
+                altDescription: 'test',
+                index: index,
+              ),
+            ),
+          ),
+        ),
         _buildPhotoMeta(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

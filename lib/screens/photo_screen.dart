@@ -9,13 +9,15 @@ class FullScreenImage extends StatelessWidget {
   final String _name;
   final String _userName;
   final String _altDescription;
+  final int _index;
 
   FullScreenImage(
-      {String name, String userName, String altDescription, Key key})
+      {String name, String userName, String altDescription, int index, Key key})
       : _name = name == null ? 'Kirill Adeshchenko' : name,
         _userName = userName == null ? 'kaparray' : userName,
         _altDescription =
             altDescription == null ? _generateDescription() : altDescription,
+        _index = index == null ? -1 : index,
         super(key: key);
 
   static String _generateDescription() {
@@ -39,7 +41,10 @@ class FullScreenImage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Photo(photoLink: kFlutterDash),
+          Hero(
+            tag: 'feedPhoto$_index',
+            child: Photo(photoLink: kFlutterDash),
+          ),
           _PhotoDescription(_altDescription),
           _Author(_name, _userName),
           _Actions(),
