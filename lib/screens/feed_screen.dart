@@ -44,9 +44,9 @@ class _FeedState extends State<Feed> {
             context,
             MaterialPageRoute(
               builder: (_) => FullScreenImage(
-                name: 'test',
-                userName: 'test',
-                altDescription: 'test',
+                name: 'Kirill Adeshchenko',
+                userName: 'kaparray',
+                altDescription: 'Alternative description',
                 index: index,
               ),
             ),
