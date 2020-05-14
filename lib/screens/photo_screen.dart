@@ -12,7 +12,11 @@ class FullScreenImage extends StatelessWidget {
   final String _heroTag;
 
   FullScreenImage(
-      {String name, String userName, String altDescription, String heroTag, Key key})
+      {String name,
+      String userName,
+      String altDescription,
+      String heroTag,
+      Key key})
       : _name = name == null ? 'Kirill Adeshchenko' : name,
         _userName = userName == null ? 'kaparray' : userName,
         _altDescription =
@@ -73,7 +77,7 @@ class _PhotoDescription extends StatelessWidget {
   }
 }
 
-class _Author extends StatelessWidget {
+class _Author extends StatefulWidget {
   final String _name;
   final String _userName;
 
@@ -82,25 +86,83 @@ class _Author extends StatelessWidget {
         _userName = '@$userName';
 
   @override
+  __AuthorState createState() => __AuthorState();
+}
+
+class __AuthorState extends State<_Author> with TickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<double> _avatarOpacity;
+  Animation<double> _userInfoOpacity;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    _avatarOpacity = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(
+          0,
+          0.5,
+          curve: Curves.ease,
+        ),
+      ),
+    );
+    _userInfoOpacity = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(
+          0.5,
+          1,
+          curve: Curves.ease,
+        ),
+      ),
+    );
+    _controller.forward().orCancel;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Row(
-        children: <Widget>[
-          UserAvatar('https://skill-branch.ru/img/speakers/Adechenko.jpg'),
-          SizedBox(width: 6),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: AnimatedBuilder(
+        animation: _controller.view,
+        builder: (context, child) {
+          return Row(
             children: <Widget>[
-              Text(_name, style: AppStyles.h2Black),
-              Text(
-                _userName,
-                style: AppStyles.h5Black.copyWith(color: AppColors.manatee),
+              Opacity(
+                opacity: _avatarOpacity.value,
+                child: UserAvatar(
+                    'https://skill-branch.ru/img/speakers/Adechenko.jpg'),
+              ),
+              SizedBox(width: 6),
+              Opacity(
+                opacity: _userInfoOpacity.value,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(widget._name, style: AppStyles.h2Black),
+                    Text(
+                      widget._userName,
+                      style:
+                          AppStyles.h5Black.copyWith(color: AppColors.manatee),
+                    ),
+                  ],
+                ),
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
