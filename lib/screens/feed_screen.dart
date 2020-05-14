@@ -32,12 +32,13 @@ class _FeedState extends State<Feed> {
   }
 
   Widget _buildItem(int index) {
+    final tag = 'feedPhoto$index';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         GestureDetector(
           child: Hero(
-            tag: 'feedPhoto$index',
+            tag: tag,
             child: Photo(photoLink: kFlutterDash),
           ),
           onTap: () => Navigator.push(
@@ -47,7 +48,7 @@ class _FeedState extends State<Feed> {
                 name: 'Kirill Adeshchenko',
                 userName: 'kaparray',
                 altDescription: 'Alternative description',
-                index: index,
+                heroTag: tag,
               ),
             ),
           ),
