@@ -98,7 +98,7 @@ class __AuthorState extends State<_Author> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
     _avatarOpacity = Tween<double>(begin: 0, end: 1).animate(
