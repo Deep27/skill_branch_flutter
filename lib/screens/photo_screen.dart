@@ -11,6 +11,7 @@ class FullScreenImage extends StatelessWidget {
   final String _altDescription;
   final String _heroTag;
   final String _photo;
+  final String _userPhoto;
 
   FullScreenImage(
       {String name,
@@ -18,6 +19,7 @@ class FullScreenImage extends StatelessWidget {
       String altDescription,
       String heroTag,
       String photo,
+      String userPhoto,
       Key key})
       : _name = name == null ? 'Kirill Adeshchenko' : name,
         _userName = userName == null ? 'kaparray' : userName,
@@ -25,6 +27,9 @@ class FullScreenImage extends StatelessWidget {
             altDescription == null ? _generateDescription() : altDescription,
         _heroTag = heroTag == null ? "" : heroTag,
         _photo = photo == null ? kFlutterDash : photo,
+        _userPhoto = userPhoto == null
+            ? 'https://skill-branch.ru/img/speakers/Adechenko.jpg'
+            : userPhoto,
         super(key: key);
 
   static String _generateDescription() {
@@ -53,7 +58,7 @@ class FullScreenImage extends StatelessWidget {
             child: Photo(photoLink: _photo),
           ),
           _PhotoDescription(_altDescription),
-          _Author(_name, _userName),
+          _Author(_name, _userName, _userPhoto),
           _Actions(),
         ],
       ),
@@ -81,12 +86,14 @@ class _PhotoDescription extends StatelessWidget {
 }
 
 class _Author extends StatefulWidget {
+  final String _userPhoto;
   final String _name;
   final String _userName;
 
-  _Author(String name, String userName)
+  _Author(String name, String userName, String userPhoto)
       : _name = name,
-        _userName = '@$userName';
+        _userName = '@$userName',
+        _userPhoto = userPhoto;
 
   @override
   __AuthorState createState() => __AuthorState();
@@ -144,8 +151,7 @@ class __AuthorState extends State<_Author> with TickerProviderStateMixin {
             children: <Widget>[
               Opacity(
                 opacity: _avatarOpacity.value,
-                child: UserAvatar(
-                    'https://skill-branch.ru/img/speakers/Adechenko.jpg'),
+                child: UserAvatar(widget._userPhoto),
               ),
               SizedBox(width: 6),
               Opacity(
