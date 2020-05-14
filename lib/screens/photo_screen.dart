@@ -10,18 +10,21 @@ class FullScreenImage extends StatelessWidget {
   final String _userName;
   final String _altDescription;
   final String _heroTag;
+  final String _photo;
 
   FullScreenImage(
       {String name,
       String userName,
       String altDescription,
       String heroTag,
+      String photo,
       Key key})
       : _name = name == null ? 'Kirill Adeshchenko' : name,
         _userName = userName == null ? 'kaparray' : userName,
         _altDescription =
             altDescription == null ? _generateDescription() : altDescription,
         _heroTag = heroTag == null ? "" : heroTag,
+        _photo = photo == null ? kFlutterDash : photo,
         super(key: key);
 
   static String _generateDescription() {
@@ -47,7 +50,7 @@ class FullScreenImage extends StatelessWidget {
         children: <Widget>[
           Hero(
             tag: _heroTag,
-            child: Photo(photoLink: kFlutterDash),
+            child: Photo(photoLink: _photo),
           ),
           _PhotoDescription(_altDescription),
           _Author(_name, _userName),
