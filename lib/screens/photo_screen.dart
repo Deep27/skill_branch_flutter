@@ -131,6 +131,10 @@ class __AuthorState extends State<_Author> with TickerProviderStateMixin {
         ),
       ),
     );
+    _playAnimation();
+  }
+
+  Future<void> _playAnimation() async {
     try {
       _controller.forward().orCancel;
     } on TickerCanceled {
