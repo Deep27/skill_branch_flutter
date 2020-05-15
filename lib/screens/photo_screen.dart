@@ -149,7 +149,7 @@ class __AuthorState extends State<_Author> with TickerProviderStateMixin {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: AnimatedBuilder(
-        animation: _controller.view,
+        animation: _controller,
         builder: (context, child) {
           return Row(
             children: <Widget>[
