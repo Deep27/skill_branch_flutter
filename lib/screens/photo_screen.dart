@@ -101,8 +101,6 @@ class _Author extends StatefulWidget {
 
 class __AuthorState extends State<_Author> with TickerProviderStateMixin {
   AnimationController _controller;
-  Animation<double> _avatarOpacity;
-  Animation<double> _userInfoOpacity;
 
   @override
   void initState() {
@@ -111,27 +109,13 @@ class __AuthorState extends State<_Author> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    _avatarOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Interval(
-          0,
-          0.5,
-          curve: Curves.ease,
-        ),
-      ),
-    );
-    _userInfoOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Interval(
-          0.5,
-          1,
-          curve: Curves.ease,
-        ),
-      ),
-    );
     _playAnimation();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   Future<void> _playAnimation() async {
@@ -143,43 +127,82 @@ class __AuthorState extends State<_Author> with TickerProviderStateMixin {
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    return _AnimatedAuthorInfo(
+      controller: _controller,
+      userPhoto: widget._userPhoto,
+      name: widget._name,
+      userName: widget._userName,
+    );
   }
+}
+
+class _AnimatedAuthorInfo extends StatelessWidget {
+  final AnimationController controller;
+  final String userPhoto;
+  final String name;
+  final String userName;
+
+  final Animation<double> avatarOpacity;
+  final Animation<double> userInfoOpacity;
+
+  _AnimatedAuthorInfo(
+      {this.controller, this.userPhoto, this.name, this.userName, Key key})
+      : avatarOpacity = Tween<double>(begin: 0, end: 1).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0,
+              0.5,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        userInfoOpacity = Tween<double>(begin: 0, end: 1).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0.5,
+              1,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      builder: _buildAuthorInfo,
+      animation: controller,
+    );
+  }
+
+  Widget _buildAuthorInfo(BuildContext context, Widget child) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return Row(
-            children: <Widget>[
-              Opacity(
-                opacity: _avatarOpacity.value,
-                child: UserAvatar(widget._userPhoto),
-              ),
-              SizedBox(width: 6),
-              Opacity(
-                opacity: _userInfoOpacity.value,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(widget._name, style: AppStyles.h2Black),
-                    Text(
-                      widget._userName,
-                      style:
-                          AppStyles.h5Black.copyWith(color: AppColors.manatee),
-                    ),
-                  ],
+      child: Row(
+        children: <Widget>[
+          Opacity(
+            opacity: avatarOpacity.value,
+            child: UserAvatar(userPhoto),
+          ),
+          SizedBox(width: 6),
+          Opacity(
+            opacity: userInfoOpacity.value,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(name, style: AppStyles.h2Black),
+                Text(
+                  userName,
+                  style: AppStyles.h5Black.copyWith(color: AppColors.manatee),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
