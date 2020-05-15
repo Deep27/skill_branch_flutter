@@ -131,7 +131,11 @@ class __AuthorState extends State<_Author> with TickerProviderStateMixin {
         ),
       ),
     );
-    _controller.forward().orCancel;
+    try {
+      _controller.forward().orCancel;
+    } on TickerCanceled {
+      print('Ticker canceled');
+    }
   }
 
   @override
