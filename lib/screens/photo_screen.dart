@@ -168,6 +168,7 @@ class __AuthorInfoState extends State<_AuthorInfo>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
+    _playAnimation();
   }
 
   @override
@@ -192,7 +193,6 @@ class __AuthorInfoState extends State<_AuthorInfo>
         name: widget._name,
         userName: widget._userName,
         userPhoto: widget._userPhoto);
-    _playAnimation();
     return animatedAuthorInfo;
   }
 }
