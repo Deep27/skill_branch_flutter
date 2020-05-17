@@ -15,16 +15,16 @@ class FullScreenImage extends StatelessWidget {
 
   FullScreenImage(
       {String name,
-      String userName,
-      String altDescription,
-      String heroTag,
-      String photo,
-      String userPhoto,
-      Key key})
+        String userName,
+        String altDescription,
+        String heroTag,
+        String photo,
+        String userPhoto,
+        Key key})
       : _name = name == null ? 'Kirill Adeshchenko' : name,
         _userName = userName == null ? 'kaparray' : userName,
         _altDescription =
-            altDescription == null ? _generateDescription() : altDescription,
+        altDescription == null ? _generateDescription() : altDescription,
         _heroTag = heroTag == null ? "" : heroTag,
         _photo = photo == null ? kFlutterDash : photo,
         _userPhoto = userPhoto == null
@@ -58,7 +58,7 @@ class FullScreenImage extends StatelessWidget {
             child: Photo(photoLink: _photo),
           ),
           _PhotoDescription(_altDescription),
-          _Author(_name, _userName, _userPhoto),
+          _AuthorInfo(_name, _userName, _userPhoto),
           _Actions(),
         ],
       ),
@@ -66,40 +66,99 @@ class FullScreenImage extends StatelessWidget {
   }
 }
 
-class _PhotoDescription extends StatelessWidget {
-  final String _description;
+class _AuthorInfoStaggeredAnimation extends StatelessWidget {
+  _AuthorInfoStaggeredAnimation(
+      {Key key, this.controller, this.name, this.userName, this.userPhoto})
+      : avatarOpacity = Tween<double>(begin: 0, end: 1).animate(
+    CurvedAnimation(
+      parent: controller,
+      curve: Interval(
+        0,
+        0.5,
+        curve: Curves.ease,
+      ),
+    ),
+  ),
+        userInfoOpacity = Tween<double>(begin: 0, end: 1).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0.5,
+              1,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        super(key: key);
 
-  _PhotoDescription(this._description);
+  final String userName;
+  final String name;
+  final String userPhoto;
+  final AnimationController controller;
+  final Animation<double> avatarOpacity;
+  final Animation<double> userInfoOpacity;
+
+  Widget _buildAnimation(BuildContext context, Widget child) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: AnimatedBuilder(
+        animation: controller,
+        builder: (context, child) {
+          return Row(
+            children: <Widget>[
+              Opacity(
+                opacity: avatarOpacity.value,
+                child: UserAvatar(userPhoto),
+              ),
+              SizedBox(width: 6),
+              Opacity(
+                opacity: userInfoOpacity.value,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(name, style: AppStyles.h2Black),
+                    Text(
+                      userName,
+                      style:
+                      AppStyles.h5Black.copyWith(color: AppColors.manatee),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Text(
-        _description,
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-        style: AppStyles.h3,
-      ),
+    return AnimatedBuilder(
+      builder: _buildAnimation,
+      animation: controller,
     );
   }
 }
 
-class _Author extends StatefulWidget {
+class _AuthorInfo extends StatefulWidget {
   final String _userPhoto;
   final String _name;
   final String _userName;
 
-  _Author(String name, String userName, String userPhoto)
+  _AuthorInfo(String name, String userName, String userPhoto, {Key key})
       : _name = name,
         _userName = '@$userName',
-        _userPhoto = userPhoto;
+        _userPhoto = userPhoto,
+        super(key: key);
 
   @override
-  __AuthorState createState() => __AuthorState();
+  __AuthorInfoState createState() => __AuthorInfoState();
 }
 
-class __AuthorState extends State<_Author> with TickerProviderStateMixin {
+class __AuthorInfoState extends State<_AuthorInfo>
+    with TickerProviderStateMixin {
   AnimationController _controller;
 
   @override
@@ -109,7 +168,6 @@ class __AuthorState extends State<_Author> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    _playAnimation();
   }
 
   @override
@@ -128,81 +186,31 @@ class __AuthorState extends State<_Author> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return _AnimatedAuthorInfo(
-      controller: _controller,
-      userPhoto: widget._userPhoto,
-      name: widget._name,
-      userName: widget._userName,
-    );
+    _AuthorInfoStaggeredAnimation animatedAuthorInfo =
+    _AuthorInfoStaggeredAnimation(
+        controller: _controller,
+        name: widget._name,
+        userName: widget._userName,
+        userPhoto: widget._userPhoto);
+    _playAnimation();
+    return animatedAuthorInfo;
   }
 }
 
-class _AnimatedAuthorInfo extends StatelessWidget {
-  final AnimationController controller;
-  final String userPhoto;
-  final String name;
-  final String userName;
+class _PhotoDescription extends StatelessWidget {
+  final String _description;
 
-  final Animation<double> avatarOpacity;
-  final Animation<double> userInfoOpacity;
-
-  _AnimatedAuthorInfo(
-      {this.controller, this.userPhoto, this.name, this.userName, Key key})
-      : avatarOpacity = Tween<double>(begin: 0, end: 1).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Interval(
-              0,
-              0.5,
-              curve: Curves.ease,
-            ),
-          ),
-        ),
-        userInfoOpacity = Tween<double>(begin: 0, end: 1).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Interval(
-              0.5,
-              1,
-              curve: Curves.ease,
-            ),
-          ),
-        ),
-        super(key: key);
+  _PhotoDescription(this._description);
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      builder: _buildAuthorInfo,
-      animation: controller,
-    );
-  }
-
-  Widget _buildAuthorInfo(BuildContext context, Widget child) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Row(
-        children: <Widget>[
-          Opacity(
-            opacity: avatarOpacity.value,
-            child: UserAvatar(userPhoto),
-          ),
-          SizedBox(width: 6),
-          Opacity(
-            opacity: userInfoOpacity.value,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(name, style: AppStyles.h2Black),
-                Text(
-                  userName,
-                  style: AppStyles.h5Black.copyWith(color: AppColors.manatee),
-                ),
-              ],
-            ),
-          ),
-        ],
+      child: Text(
+        _description,
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+        style: AppStyles.h3,
       ),
     );
   }
