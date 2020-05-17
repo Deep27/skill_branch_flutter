@@ -15,16 +15,16 @@ class FullScreenImage extends StatelessWidget {
 
   FullScreenImage(
       {String name,
-        String userName,
-        String altDescription,
-        String heroTag,
-        String photo,
-        String userPhoto,
-        Key key})
+      String userName,
+      String altDescription,
+      String heroTag,
+      String photo,
+      String userPhoto,
+      Key key})
       : _name = name == null ? 'Kirill Adeshchenko' : name,
         _userName = userName == null ? 'kaparray' : userName,
         _altDescription =
-        altDescription == null ? _generateDescription() : altDescription,
+            altDescription == null ? _generateDescription() : altDescription,
         _heroTag = heroTag == null ? "" : heroTag,
         _photo = photo == null ? kFlutterDash : photo,
         _userPhoto = userPhoto == null
@@ -70,15 +70,15 @@ class _AuthorInfoStaggeredAnimation extends StatelessWidget {
   _AuthorInfoStaggeredAnimation(
       {Key key, this.controller, this.name, this.userName, this.userPhoto})
       : avatarOpacity = Tween<double>(begin: 0, end: 1).animate(
-    CurvedAnimation(
-      parent: controller,
-      curve: Interval(
-        0,
-        0.5,
-        curve: Curves.ease,
-      ),
-    ),
-  ),
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0,
+              0.5,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
         userInfoOpacity = Tween<double>(begin: 0, end: 1).animate(
           CurvedAnimation(
             parent: controller,
@@ -121,7 +121,7 @@ class _AuthorInfoStaggeredAnimation extends StatelessWidget {
                     Text(
                       userName,
                       style:
-                      AppStyles.h5Black.copyWith(color: AppColors.manatee),
+                          AppStyles.h5Black.copyWith(color: AppColors.manatee),
                     ),
                   ],
                 ),
@@ -188,11 +188,11 @@ class __AuthorInfoState extends State<_AuthorInfo>
   @override
   Widget build(BuildContext context) {
     _AuthorInfoStaggeredAnimation animatedAuthorInfo =
-    _AuthorInfoStaggeredAnimation(
-        controller: _controller,
-        name: widget._name,
-        userName: widget._userName,
-        userPhoto: widget._userPhoto);
+        _AuthorInfoStaggeredAnimation(
+            controller: _controller,
+            name: widget._name,
+            userName: widget._userName,
+            userPhoto: widget._userPhoto);
     return animatedAuthorInfo;
   }
 }
