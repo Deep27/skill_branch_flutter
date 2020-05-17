@@ -69,7 +69,10 @@ class FullScreenImage extends StatelessWidget {
 class _AuthorInfoStaggeredAnimation extends StatelessWidget {
   _AuthorInfoStaggeredAnimation(
       {Key key, this.controller, this.name, this.userName, this.userPhoto})
-      : avatarOpacity = Tween<double>(begin: 0, end: 1).animate(
+      : avatarOpacity = Tween<double>(
+          begin: 0,
+          end: 1,
+        ).animate(
           CurvedAnimation(
             parent: controller,
             curve: Interval(
@@ -168,7 +171,7 @@ class __AuthorInfoState extends State<_AuthorInfo>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    _playAnimation();
+    _controller.forward();
   }
 
   @override
@@ -177,23 +180,14 @@ class __AuthorInfoState extends State<_AuthorInfo>
     super.dispose();
   }
 
-  Future<void> _playAnimation() async {
-    try {
-      _controller.forward().orCancel;
-    } on TickerCanceled {
-      print('Ticker canceled');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    _AuthorInfoStaggeredAnimation animatedAuthorInfo =
-        _AuthorInfoStaggeredAnimation(
-            controller: _controller,
-            name: widget._name,
-            userName: widget._userName,
-            userPhoto: widget._userPhoto);
-    return animatedAuthorInfo;
+    return _AuthorInfoStaggeredAnimation(
+      controller: _controller.view,
+      name: widget._name,
+      userName: widget._userName,
+      userPhoto: widget._userPhoto,
+    );
   }
 }
 
