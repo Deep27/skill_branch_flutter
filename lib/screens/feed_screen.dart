@@ -41,17 +41,21 @@ class _FeedState extends State<Feed> {
             tag: tag,
             child: Photo(photoLink: kFlutterDash),
           ),
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => FullScreenImage(
-                name: 'Kirill Adeshchenko',
-                userName: 'kaparray',
-                altDescription: 'Alternative description',
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              '/fullScreenImage',
+              arguments: FullScreenImageArguments(
+                routeSettings: RouteSettings(
+                  arguments: 'Some title',
+                ),
+                photo: kFlutterDash,
+                altDescription: 'thnhtn',
+                userName: 'username',
                 heroTag: tag,
               ),
-            ),
-          ),
+            );
+          },
         ),
         _buildPhotoMeta(),
         Padding(

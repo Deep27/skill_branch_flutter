@@ -1,4 +1,8 @@
+import 'dart:io' show Platform;
+
 import 'package:FlutterGalleryApp/screens/home.dart';
+import 'package:FlutterGalleryApp/screens/photo_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -10,6 +14,34 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      onGenerateRoute: (RouteSettings settings) {
+        if (settings.name == '/fullScreenImage') {
+          FullScreenImageArguments args =
+              settings.arguments as FullScreenImageArguments;
+          final route = FullScreenImage(
+            name: args.name,
+            userName: args.userName,
+            altDescription: args.altDescription,
+            heroTag: args.heroTag,
+            photo: args.photo,
+            userPhoto: args.userPhoto,
+            key: key,
+          );
+
+          if (Platform.isAndroid) {
+            return MaterialPageRoute(
+              builder: (ctx) => route,
+              settings: args.routeSettings,
+            );
+          } else if (Platform.isIOS) {
+            return CupertinoPageRoute(
+              builder: (ctx) => route,
+              settings: args.routeSettings,
+            );
+          }
+        }
+        return null;
+      },
       home: Home(),
     );
   }

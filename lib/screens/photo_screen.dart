@@ -5,6 +5,27 @@ import 'package:FlutterGalleryApp/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+class FullScreenImageArguments {
+  final String name;
+  final String userName;
+  final String altDescription;
+  final String heroTag;
+  final String photo;
+  final String userPhoto;
+  final RouteSettings routeSettings;
+  final Key key;
+
+  FullScreenImageArguments(
+      {this.name,
+      this.userName,
+      this.altDescription,
+      this.heroTag,
+      this.photo,
+      this.userPhoto,
+      this.routeSettings,
+      this.key});
+}
+
 class FullScreenImage extends StatelessWidget {
   final String _name;
   final String _userName;
@@ -42,9 +63,38 @@ class FullScreenImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String title = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Photo'),
+        elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {
+              showModalBottomSheet(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                context: context,
+                builder: (ctx) {
+                  return ClipRRect(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.mercury,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(10, (i) => FlutterLogo()),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+        title: Text(title),
         leading: IconButton(
           icon: Icon(CupertinoIcons.back),
           onPressed: () => Navigator.of(context).pop(),
@@ -220,9 +270,64 @@ class _Actions extends StatelessWidget {
         children: <Widget>[
           _LikeButton(),
           SizedBox(width: 10),
-          _Button('Save'),
+          _Button(
+            'Save',
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: const Text('Alert Dialog title'),
+                  content: Text('Alert Dialog body'),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Ok'),
+                    ),
+                    FlatButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Cancel'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
           SizedBox(width: 10),
-          _Button('Visit'),
+          _Button(
+            'Visit',
+            onTap: () async {
+              OverlayState overlayState = Overlay.of(context);
+              OverlayEntry overlayEntry = OverlayEntry(
+                builder: (BuildContext ctx) {
+                  return Positioned(
+                    top: MediaQuery.of(context).viewInsets.top + 50,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: MediaQuery.of(ctx).size.width,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.mercury,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Text('SkillBranch'),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+              overlayState.insert(overlayEntry);
+              await Future.delayed(Duration(seconds: 1));
+              overlayEntry.remove();
+            },
+          ),
         ],
       ),
     );
