@@ -4,10 +4,14 @@ import 'dart:io' show Platform;
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/home.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
+  final Stream<ConnectivityResult> connectivity =
+      Connectivity().onConnectivityChanged;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,7 +49,7 @@ class MyApp extends StatelessWidget {
         }
         return null;
       },
-      home: Home(StreamController().stream),
+      home: Home(connectivity),
     );
   }
 }

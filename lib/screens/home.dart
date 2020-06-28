@@ -3,20 +3,22 @@ import 'dart:async';
 import 'package:FlutterGalleryApp/res/app_icons.dart';
 import 'package:FlutterGalleryApp/res/colors.dart';
 import 'package:FlutterGalleryApp/screens/feed_screen.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
-  final Stream stream;
+  final Stream<ConnectivityResult> connectivity;
 
-  Home(this.stream, {Key key}) : super(key: key);
+  Home(this.connectivity, {Key key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
-  int currentTab = 0;
   final PageStorageBucket bucket = PageStorageBucket();
+  int currentTab = 0;
+  StreamSubscription<ConnectivityResult> connectivitySubscription;
 
   final List<Widget> pages = [
     Feed(key: PageStorageKey('FeedPage')),
@@ -29,6 +31,54 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     BottomNavyBarItem(title: const Text('Search')),
     BottomNavyBarItem(title: const Text('User')),
   ];
+
+  final OverlayEntry noInternetOverlay = OverlayEntry(
+    builder: (BuildContext ctx) {
+      return Positioned(
+        top: MediaQuery.of(ctx).viewInsets.top + 50,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(ctx).size.width,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 10,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.mercury,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Text('No internet connection'),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    OverlayState overlayState = Overlay.of(context);
+    connectivitySubscription =
+        widget.connectivity.listen((ConnectivityResult result) {
+      print(result.description());
+      if (result == ConnectivityResult.none) {
+        overlayState.insert(noInternetOverlay);
+      } else {
+        noInternetOverlay.remove();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    connectivitySubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -212,5 +262,18 @@ class BottomNavyBarItem {
     // called only in debug mode
     assert(asset != null, 'Asset is null!');
     assert(title != null, 'Title is null!');
+  }
+}
+
+extension ConnectivityResultExtension on ConnectivityResult {
+  String description() {
+    switch (this) {
+      case ConnectivityResult.wifi:
+        return 'Connected via Wi-Fi';
+      case ConnectivityResult.mobile:
+        return 'Connected via Mobile network';
+      case ConnectivityResult.none:
+        return 'No internet connection';
+    }
   }
 }

@@ -337,7 +337,7 @@ class _Actions extends StatelessWidget {
                 },
               );
               overlayState.insert(overlayEntry);
-              await Future.delayed(Duration(seconds: 1));
+              await Future.delayed(Duration(seconds: 3));
               overlayEntry.remove();
             },
           ),
