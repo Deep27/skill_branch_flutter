@@ -80,14 +80,15 @@ Widget _buildPhotoMeta() {
       children: <Widget>[
         Row(
           children: <Widget>[
-            UserAvatar('https://skill-branch.ru/img/speakers/Adechenko.jpg'),
+//            UserAvatar('https://skill-branch.ru/img/speakers/Adechenko.jpg'),
+            UserAvatar('https://www.thewodge.com/wp-content/uploads/2019/11/avatar-icon.png'),
             SizedBox(width: 6),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                const Text('Kirill Adeshchenko', style: AppStyles.h2Black),
-                Text('@kaparray',
+                const Text('Roman So', style: AppStyles.h2Black),
+                Text('@RomanSo',
                     style:
                         AppStyles.h5Black.copyWith(color: AppColors.manatee)),
               ],

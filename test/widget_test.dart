@@ -52,7 +52,7 @@ void main() {
     );
 
     final titleFinder = find.byKey(Key('FullScreenImage'));
-    final userNameText = find.text('@kaparray');
+    final userNameText = find.text('@RomanSo');
 
     expect(titleFinder, findsOneWidget);
     expect(userNameText, findsOneWidget);
@@ -62,14 +62,14 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: FullScreenImage(
-          name: 'Kirill Adeshchenko',
+          name: 'Roman So',
           key: Key('FullScreenImage'),
         ),
       ),
     );
 
     final titleFinder = find.byKey(Key('FullScreenImage'));
-    final nameText = find.text('Kirill Adeshchenko');
+    final nameText = find.text('Roman So');
 
     expect(titleFinder, findsOneWidget);
     expect(nameText, findsOneWidget);

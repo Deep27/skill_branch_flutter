@@ -11,8 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   cached_network_image: any
+  connectivity: ^0.4.8+6
   cupertino_icons: ^0.1.2
   csv: ^4.0.3
+  gallery_saver: ^2.0.1
 
 dev_dependencies:
   flutter_test:

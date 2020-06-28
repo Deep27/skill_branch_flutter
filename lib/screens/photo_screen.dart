@@ -1,5 +1,6 @@
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/feed_screen.dart';
+import 'package:FlutterGalleryApp/widgets/claim_bottom_sheet.dart';
 import 'package:FlutterGalleryApp/widgets/photo.dart';
 import 'package:FlutterGalleryApp/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,22 +35,22 @@ class FullScreenImage extends StatelessWidget {
   final String _photo;
   final String _userPhoto;
 
-  FullScreenImage(
-      {String name,
-      String userName,
-      String altDescription,
-      String heroTag,
-      String photo,
-      String userPhoto,
-      Key key})
-      : _name = name == null ? 'Kirill Adeshchenko' : name,
-        _userName = userName == null ? 'kaparray' : userName,
+  FullScreenImage({
+    String name,
+    String userName,
+    String altDescription,
+    String heroTag,
+    String photo,
+    String userPhoto,
+    Key key,
+  })  : _name = name == null ? 'Roman So' : name,
+        _userName = userName == null ? 'RomanSo' : userName,
         _altDescription =
             altDescription == null ? _generateDescription() : altDescription,
-        _heroTag = heroTag == null ? "" : heroTag,
+        _heroTag = heroTag == null ? '' : heroTag,
         _photo = photo == null ? kFlutterDash : photo,
         _userPhoto = userPhoto == null
-            ? 'https://skill-branch.ru/img/speakers/Adechenko.jpg'
+            ? 'https://www.thewodge.com/wp-content/uploads/2019/11/avatar-icon.png'
             : userPhoto,
         super(key: key);
 
@@ -71,26 +72,20 @@ class FullScreenImage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
-              showModalBottomSheet(
+              Future<Claim> chosenClaim = showModalBottomSheet(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
                 context: context,
-                builder: (ctx) {
-                  return ClipRRect(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.mercury,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: List.generate(10, (i) => FlutterLogo()),
-                      ),
-                    ),
-                  );
-                },
+                builder: (ctx) => ClaimBottomSheet(),
               );
+              chosenClaim.then((claim) {
+                if (claim == null) {
+                  print('No claim chosen');
+                } else {
+                  print('Claim chosen: ${claim.name()}');
+                }
+              });
             },
           ),
         ],
