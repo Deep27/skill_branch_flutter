@@ -165,11 +165,13 @@ class _AuthorInfoStaggeredAnimation extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(name, style: AppStyles.h2Black),
+                    Text(name, style: Theme.of(context).textTheme.headline2),
                     Text(
                       userName,
-                      style:
-                          AppStyles.h5Black.copyWith(color: AppColors.manatee),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5
+                          .copyWith(color: AppColors.manatee),
                     ),
                   ],
                 ),
@@ -249,7 +251,7 @@ class _PhotoDescription extends StatelessWidget {
         _description,
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
-        style: AppStyles.h3,
+        style: Theme.of(context).textTheme.headline3,
       ),
     );
   }

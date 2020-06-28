@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 
+import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/home.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: buildAppTextTheme(),
       ),
       onGenerateRoute: (RouteSettings settings) {
         if (settings.name == '/fullScreenImage') {

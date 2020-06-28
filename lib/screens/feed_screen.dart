@@ -57,14 +57,17 @@ class _FeedState extends State<Feed> {
             );
           },
         ),
-        _buildPhotoMeta(),
+        _buildPhotoMeta(context),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Text(
             'This is Flutter dash. I love him :)',
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: AppStyles.h3.copyWith(color: AppColors.black),
+            style: Theme.of(context)
+                .textTheme
+                .headline3
+                .copyWith(color: AppColors.black),
           ),
         ),
       ],
@@ -72,7 +75,7 @@ class _FeedState extends State<Feed> {
   }
 }
 
-Widget _buildPhotoMeta() {
+Widget _buildPhotoMeta(BuildContext ctx) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
     child: Row(
@@ -81,16 +84,21 @@ Widget _buildPhotoMeta() {
         Row(
           children: <Widget>[
 //            UserAvatar('https://skill-branch.ru/img/speakers/Adechenko.jpg'),
-            UserAvatar('https://www.thewodge.com/wp-content/uploads/2019/11/avatar-icon.png'),
+            UserAvatar(
+                'https://www.thewodge.com/wp-content/uploads/2019/11/avatar-icon.png'),
             SizedBox(width: 6),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                const Text('Roman So', style: AppStyles.h2Black),
-                Text('@RomanSo',
-                    style:
-                        AppStyles.h5Black.copyWith(color: AppColors.manatee)),
+                Text('Roman So', style: Theme.of(ctx).textTheme.headline2),
+                Text(
+                  '@RomanSo',
+                  style: Theme.of(ctx)
+                      .textTheme
+                      .headline5
+                      .copyWith(color: AppColors.manatee),
+                ),
               ],
             ),
           ],
