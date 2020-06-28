@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:FlutterGalleryApp/res/res.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         }
         return null;
       },
-      home: Home(),
+      home: Home(StreamController().stream),
     );
   }
 }
