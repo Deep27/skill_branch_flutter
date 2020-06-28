@@ -274,6 +274,8 @@ extension ConnectivityResultExtension on ConnectivityResult {
         return 'Connected via Mobile network';
       case ConnectivityResult.none:
         return 'No internet connection';
+      default:
+        throw Exception('Unknown network connection state!');
     }
   }
 }
