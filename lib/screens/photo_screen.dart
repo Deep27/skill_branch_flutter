@@ -5,6 +5,7 @@ import 'package:FlutterGalleryApp/widgets/photo.dart';
 import 'package:FlutterGalleryApp/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 class FullScreenImageArguments {
   final String name;
@@ -104,7 +105,7 @@ class FullScreenImage extends StatelessWidget {
           ),
           _PhotoDescription(_altDescription),
           _AuthorInfo(_name, _userName, _userPhoto),
-          _Actions(),
+          _Actions(_photo),
         ],
       ),
     );
@@ -258,6 +259,10 @@ class _PhotoDescription extends StatelessWidget {
 }
 
 class _Actions extends StatelessWidget {
+  final String imagePath;
+
+  _Actions(this.imagePath, {Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -273,16 +278,27 @@ class _Actions extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (ctx) => AlertDialog(
-                  title: const Text('Alert Dialog title'),
-                  content: Text('Alert Dialog body'),
+                  title: const Text('Downloading photos'),
+                  content:
+                      const Text('Are you sure you want to upload a photo?'),
                   actions: <Widget>[
                     FlatButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Ok'),
+                      onPressed: () {
+                        print('Saving image');
+                        GallerySaver.saveImage(imagePath).then((bool success) {
+                          if (success) {
+                            print('Image saved');
+                          } else {
+                            print('Error occured');
+                          }
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      child: const Text('Download'),
                     ),
                     FlatButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Cancel'),
+                      child: const Text('Close'),
                     ),
                   ],
                 ),
