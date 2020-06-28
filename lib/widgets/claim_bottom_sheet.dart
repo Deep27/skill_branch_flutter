@@ -14,15 +14,19 @@ class ClaimBottomSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: List.generate(
             Claim.values.length,
-            (i) => Container(
-              width: double.infinity,
-              child: RawMaterialButton(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
+            (i) => Material(
+              color: AppColors.mercury,
+              child: InkWell(
                 splashColor: AppColors.dodgerBlue,
-                child: Text(
-                  Claim.values[i].name().toUpperCase(),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Text(
+                    Claim.values[i].name().toUpperCase(),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                onPressed: () => Navigator.pop(context, Claim.values[i]),
+                onTap: () => Navigator.pop(context, Claim.values[i]),
               ),
             ),
           ),
